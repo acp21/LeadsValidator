@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "module": "es2020",
+    "target": "es2017",
+    "moduleResolution": "node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "$lib": ["src/lib"],
+      "$components/*": ["src/components/*"],
+      "$app/*": ["src/*"]
+    }
+  },
+  "include": ["src/**/*.ts", "src/**/*.svelte"],
+  "exclude": ["node_modules/*", "__sapper__/*", "public/*"]
+}
