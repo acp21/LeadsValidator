@@ -74,15 +74,3 @@
     <button type="submit">Submit</button>
   </form>
   
-  <style>
-    .input-group {
-      margin-bottom: 10px;
-    }
-    input {
-      margin-right: 5px;
-    }
-    button {
-      /* Add button styling */
-    }
-  </style>
-  

@@ -4,6 +4,11 @@ import app from "../firebase/firebaseInit";
 
 export const auth = getAuth(app);
 
+// TODO: Add features for updating user login time on logins
+// TODO: Add feature for creating user in 'users' firestore collection
+
+
+// TODO: Verify if this is first login, if so, create document in DB account
 export const loginWithGoogle = async (): Promise<UserCredential | void> => {
   const provider = new GoogleAuthProvider();
   try {
@@ -15,6 +20,8 @@ export const loginWithGoogle = async (): Promise<UserCredential | void> => {
   }
 };
 
+
+// TODO: Create document in DB account
 export const registerWithEmailPassword = async (email: string, password: string, confirmPassword: string): Promise<UserCredential | void> => {
   try {
     if(password === confirmPassword){
