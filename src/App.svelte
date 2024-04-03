@@ -1,10 +1,13 @@
 <!-- App.svelte -->
 <script lang="ts">
 	import LoginCard from './components/LoginCard.svelte';
+  import LaunchForm from './components/LaunchForm.svelte';
+  import './styles/common.css'
   </script>
   
   <main>
-	<LoginCard />
+	<!-- <LoginCard /> -->
+  <LaunchForm/>
   </main>
   
   <style>

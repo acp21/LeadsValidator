@@ -1,8 +1,8 @@
 // src/services/firebase_auth.ts
-import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, UserCredential, AuthError } from "firebase/auth";
+import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, UserCredential, AuthError, sendEmailVerification } from "firebase/auth";
 import app from "../firebase/firebaseInit";
 
-const auth = getAuth(app);
+export const auth = getAuth(app);
 
 export const loginWithGoogle = async (): Promise<UserCredential | void> => {
   const provider = new GoogleAuthProvider();
@@ -15,10 +15,22 @@ export const loginWithGoogle = async (): Promise<UserCredential | void> => {
   }
 };
 
-export const registerWithEmailPassword = async (email: string, password: string): Promise<UserCredential | void> => {
+export const registerWithEmailPassword = async (email: string, password: string, confirmPassword: string): Promise<UserCredential | void> => {
   try {
-    const result = await createUserWithEmailAndPassword(auth, email, password);
-    return result;
+    if(password === confirmPassword){
+      const result = await createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          const user = userCredential.user
+          sendEmailVerification(user)
+            .then(() => {
+              console.log("Verification email sent.")
+            })
+        })
+      return result;  
+    }
+    else{
+      console.error("Passwords do not match")
+    }
   } catch (error) {
     console.error("Error registering with email and password:", error);
     throw error;
@@ -43,3 +55,12 @@ export const logout = async (): Promise<void> => {
     throw error;
   }
 };
+
+export const confirmVerifiedUser = ():  boolean => {
+  if(auth.currentUser && auth.currentUser.emailVerified){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
