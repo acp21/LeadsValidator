@@ -62,7 +62,7 @@
       // Build custom_fields
       customColumns.forEach((custom) => {
         if (custom.columnLetter && custom.columnName) {
-          request.direct_fields.push({
+          request.custom_fields.push({
             field_properties: {
               var_name: custom.columnName,
               input_column_index: convertColumnLetterToIndex(custom.columnLetter)
@@ -75,11 +75,11 @@
       promptColumns.forEach((prompt, index) => {
         if (prompt) {
           request.prompt_fields.push({
-            output_col_index: directColumns.length + (customColumns.websiteData ? 1 : 0),
+            output_col_index: convertColumnLetterToIndex(prompt.outputColumnIndex),
             output_var_name: `llmResponse${index + 1}`,
             order: index,
             prompt: {
-              base_text: prompt
+              base_text: prompt.prompt
             }
           });
         }
@@ -142,12 +142,12 @@
         <input
           type="text"
           placeholder="LLM Input"
-          bind:value={promptColumns[index]}
+          bind:value={input.prompt}
         />
         <input
           type="text"
           placeholder="Output Column Index"
-          bind:value={promptColumns.outputColumnIndex}
+          bind:value={input.outputColumnIndex}
         />
         {#if index === promptColumns.length - 1}
           <button type="button" on:click={addLLMInput}>+</button>
