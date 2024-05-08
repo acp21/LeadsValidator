@@ -36,8 +36,33 @@
     // Function to handle the form submission
     function submitForm() {
       // Process and handle the form data
+      hitApi()
       buildRequest()
       // console.log({ inputColumns, outputColumns, llmInputs });
+    }
+
+    async function hitApi(){
+      const requestData = buildRequest();
+      try {
+        const response = await fetch('http://localhost:8080/run_request', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(requestData)
+        });
+
+        if (response.ok){
+          const data = await response.json();
+          console.log('Response:', data);
+        }
+        else {
+          console.error('Request failed:', response.status);
+        }
+      }
+      catch (error) {
+        console.error('Request failed:', error);
+      }
     }
 
     function buildRequest() {
@@ -85,6 +110,7 @@
         }
       });
       console.log(request)
+      return request
     }
   </script>
   
