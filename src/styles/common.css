@@ -39,6 +39,10 @@
     flex-grow: 1;
     min-height: 100px; /* Specify the minimum height for the long text field */
   }
-  
+  .file-names {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
   /* ... Other common styles ... */
   

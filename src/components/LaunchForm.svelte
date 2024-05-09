@@ -3,8 +3,15 @@
     let directColumns = [{ columnLetter: '', columnName: '' }];
     let customColumns = [{ columnLetter: '', columnName: '', type: '' }];
     let promptColumns = [{prompt: '', outputColumnIndex: '', }];
+    let inputFileName = '';
+    let outputFileName = '';
 
-    const customTypes = ['website_body', 'website_url', 'user_input'];
+    const customTypes = ['Website URL'];
+
+    const customTypeMap = {
+      'Website URL': 'website_body',
+      'LinkedIn Profile': 'linkedin'
+    }
   
 
     function convertColumnLetterToIndex(columnLetter) {
@@ -67,6 +74,8 @@
 
     function buildRequest() {
       const request = {
+        input_file_name: inputFileName,
+        output_file_name: outputFileName,
         direct_fields: [],
         custom_fields: [],
         prompt_fields: []
@@ -90,8 +99,9 @@
           request.custom_fields.push({
             field_properties: {
               var_name: custom.columnName,
-              input_column_index: convertColumnLetterToIndex(custom.columnLetter)
-            }
+              input_column_index: convertColumnLetterToIndex(custom.columnLetter),
+            },
+            custom_field_request_type: customTypeMap[custom.type] || 'INVALID'
           });
         }
       });
@@ -115,6 +125,18 @@
   </script>
   
   <form on:submit|preventDefault={submitForm}>
+    <div class="file-names">
+      <input
+        type="text"
+        placeholder="Input File Name"
+        bind:value={inputFileName}
+      />
+      <input
+        type="text"
+        placeholder="Output File Name"
+        bind:value={outputFileName}
+      />
+    </div>
     <!-- Input Columns -->
     <h3>Input Columns</h3>
     {#each directColumns as input, index}
@@ -155,7 +177,7 @@
             <option value={type}>{type}</option>
           {/each}
         </select>
-        {#if index === directColumns.length - 1}
+        {#if index === customColumns.length - 1}
           <button type="button" on:click={addCustomColumn}>+</button>
         {/if}
       </div>
