@@ -1,4 +1,5 @@
 <script>
+    import { getNewExcelFileReference, uploadFileToRef } from "$app/services/firebase_storage";
     // TODO: Add type safety to this
     let directColumns = [{ columnLetter: '', columnName: '' }];
     let customColumns = [{ columnLetter: '', columnName: '', type: '' }];
@@ -43,7 +44,9 @@
     // Function to handle the form submission
     function submitForm() {
       // Process and handle the form data
-      hitApi()
+      const file = document.getElementById('fileInput').files[0];
+      uploadFileToRef(getNewExcelFileReference('NewFile'), file);
+      // hitApi()
       buildRequest()
       // console.log({ inputColumns, outputColumns, llmInputs });
     }
@@ -70,6 +73,10 @@
       catch (error) {
         console.error('Request failed:', error);
       }
+    }
+
+    function uploadFile() {
+
     }
 
     function buildRequest() {
@@ -126,6 +133,7 @@
   
   <form on:submit|preventDefault={submitForm}>
     <div class="file-names">
+      <input type="file" id='fileInput'/>
       <input
         type="text"
         placeholder="Input File Name"

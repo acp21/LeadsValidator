@@ -1,14 +1,14 @@
 import app from '../firebase/firebaseInit';
-import { StorageReference, UploadTask, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
+import { StorageReference, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 
 const storage = getStorage();
 
-export const getIncompleteFileStorageReference = (filename: string): StorageReference => {
-    return ref(storage, 'incomplete/'.concat(filename))
+export const getNewExcelFileReference = (filename: string): StorageReference => {
+    return ref(storage, `incomplete/${filename}.xlsx`)
 }
 
-// TODO: Make this async and error handle
-export const uploadFileToRef = (ref: StorageReference, file: File): UploadTask => {
-    const uploadTask: UploadTask = uploadBytesResumable(ref, file)
-    return uploadTask
+export const uploadFileToRef = (ref: StorageReference, file: File) => {
+    const uploadTask = uploadBytesResumable(ref, file).then((snapshot) => {
+        console.log('Uploaded file')
+    })
 }
